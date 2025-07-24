@@ -1,4 +1,4 @@
-package com.br.conecta_doacoes.conectadoacoes.model;
+package com.br.conecta_doacoes.conectadoacoes.model.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_usuario")
@@ -18,10 +19,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    private String email;
+
+    private String nome;
 
     private String password;
 
     private String role = "USER";
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Item> itens;
 }
