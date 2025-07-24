@@ -1,6 +1,6 @@
 package com.br.conecta_doacoes.conectadoacoes.config;
 
-import com.br.conecta_doacoes.conectadoacoes.model.Usuario;
+import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,9 +13,9 @@ public class DataLoaderConfig {
     @Bean
     public CommandLineRunner initData(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            if(!usuarioRepository.existsByUsername("guisales")) {
+            if(!usuarioRepository.existsByEmail("guilhermessaless11@gmail.com")) {
                 Usuario user = new Usuario();
-                user.setUsername("guisales");
+                user.setEmail("guilhermessaless11@gmail.com");
                 user.setPassword(passwordEncoder.encode("guisales"));
                 usuarioRepository.save(user);
             }

@@ -1,7 +1,11 @@
 package com.br.conecta_doacoes.conectadoacoes.controller;
 
-import com.br.conecta_doacoes.conectadoacoes.model.Usuario;
+import com.amazonaws.Response;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioDTO;
+import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
+import com.br.conecta_doacoes.conectadoacoes.service.UsuarioService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -10,29 +14,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final UsuarioRepository usuarioRepository;
-
+    private final UsuarioService usuarioService;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UsuarioController(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
+    public UsuarioController(UsuarioService usuarioService, BCryptPasswordEncoder passwordEncoder) {
+        this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Usuario user) {
-        if (usuarioRepository.findByUsername(user.getUsername()) != null) {
-            return ResponseEntity.badRequest().body("Usuário já existe");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        usuarioRepository.save(user);
-        return ResponseEntity.ok("Usuário registrado com sucesso");
+    @PostMapping("/cadastrar")
+    public ResponseEntity<String> register(@RequestBody UsuarioDTO user) {
+        this.usuarioService.salvarUsuario(user);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/rota-protegida")
-    public ResponseEntity<String> rotaProtegida() {
-        return ResponseEntity.ok().body("OLA AQUI A ROTA EH PROTEGIDA");
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<String> editar(@RequestBody UsuarioDTO user, @PathVariable Long id) {
+        this.usuarioService.editarUsuario(id, user);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @DeleteMapping("/remover/{id}")
+    public ResponseEntity<String> remover(@PathVariable Long id) {
+        this.usuarioService.excluirUsuario(id);
+        return ResponseEntity.noContent().build();
+    }
 }
