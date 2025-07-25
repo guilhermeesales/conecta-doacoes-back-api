@@ -16,6 +16,7 @@ public class DataLoaderConfig {
             if(!usuarioRepository.existsByEmail("guilhermessaless11@gmail.com")) {
                 Usuario user = new Usuario();
                 user.setEmail("guilhermessaless11@gmail.com");
+                user.setNome("Guilherme Sales");
                 user.setPassword(passwordEncoder.encode("guisales"));
                 usuarioRepository.save(user);
             }

@@ -31,13 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/usuarios/cadastrar").permitAll()
+                .antMatchers(
+                        "/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+                        "/configuration/**",
+                        "/v2/api-docs",
+                        "/api/usuarios/cadastrar"
+                ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
     }
-
 }
