@@ -1,15 +1,18 @@
 package com.br.conecta_doacoes.conectadoacoes.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class UsuarioDTO {
-    private Long id;
-    private String nome;
+@AllArgsConstructor
+@NoArgsConstructor
+public class UsuarioRegisterRequest {
     private String email;
-    private String senha;
+    private String nome;
     private String password;
     private String confirmPassword;
+    private String role;
 }

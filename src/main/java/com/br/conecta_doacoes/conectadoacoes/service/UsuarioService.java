@@ -1,7 +1,7 @@
 package com.br.conecta_doacoes.conectadoacoes.service;
 
 import com.br.conecta_doacoes.conectadoacoes.exception.SenhasNaoCoincidemException;
-import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioDTO;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.model.mapper.UsuarioMapper;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
@@ -24,20 +24,23 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void salvarUsuario(UsuarioDTO dto) {
+    public void salvarUsuario(UsuarioRegisterRequest dto) {
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new SenhasNaoCoincidemException("As senhas não coincidem");
         }
-        Usuario usuario = usuarioMapper.converterParaEntity(dto, passwordEncoder);
+
+        Usuario usuario = usuarioMapper.toUsuario(dto);
+        usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        System.out.println(usuario);
         usuarioRepository.save(usuario);
     }
 
-    public void editarUsuario(Long id, UsuarioDTO dto) {
+    public void editarUsuario(Long id, UsuarioRegisterRequest dto) {
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 
-        usuarioMapper.atualizarUsuarioExistente(existente, dto, passwordEncoder);
-
+        usuarioMapper.atualizarUsuarioExistente(existente, dto);
+        existente.setPassword(passwordEncoder.encode(dto.getPassword()));
         usuarioRepository.save(existente);
     }
 

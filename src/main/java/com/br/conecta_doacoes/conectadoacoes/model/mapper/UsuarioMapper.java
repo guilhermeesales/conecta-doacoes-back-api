@@ -1,46 +1,24 @@
 package com.br.conecta_doacoes.conectadoacoes.model.mapper;
 
-import com.br.conecta_doacoes.conectadoacoes.exception.SenhasNaoCoincidemException;
-import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioDTO;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
-@Component
-public class UsuarioMapper {
-    private final ModelMapper modelMapper;
-    private final ObjectMapper objectMapper;
+@Mapper(componentModel = "spring")
+public interface UsuarioMapper {
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "itens", ignore = true)
+    @Mapping(target = "password", source = "password")
+    @Mapping(target = "role", source = "role", defaultValue = "USER")
+    Usuario toUsuario(UsuarioRegisterRequest dto);
 
-    public UsuarioMapper(ModelMapper modelMapper, ObjectMapper objectMapper) {
-        this.modelMapper = modelMapper;
-        this.objectMapper = objectMapper;
-    }
+    @Mapping(target = "confirmPassword", ignore = true)
+    UsuarioRegisterRequest toUsuarioRegisterRequest(Usuario usuario);
 
-    public Usuario converterParaEntity(UsuarioDTO dto, PasswordEncoder passwordEncoder) {
-
-        Usuario usuario = modelMapper.map(dto, Usuario.class);
-        usuario.setId(dto.getId());
-        usuario.setEmail(dto.getEmail());
-        usuario.setNome(dto.getNome());
-        usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
-        usuario.setRole("USER");
-
-        return usuario;
-    }
-
-    public void atualizarUsuarioExistente(Usuario existente, UsuarioDTO dto, PasswordEncoder passwordEncoder) {
-        existente.setNome(dto.getNome());
-        existente.setEmail(dto.getEmail());
-
-        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-            if (!dto.getPassword().equals(dto.getConfirmPassword())) {
-                throw new SenhasNaoCoincidemException("As senhas não coincidem");
-            }
-            existente.setPassword(passwordEncoder.encode(dto.getPassword()));
-        }
-    }
-
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "itens", ignore = true)
+    @Mapping(target = "password", source = "password")
+    void atualizarUsuarioExistente(@MappingTarget Usuario usuario, UsuarioRegisterRequest dto);
 }
