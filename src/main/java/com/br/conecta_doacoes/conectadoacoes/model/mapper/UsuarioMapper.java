@@ -7,7 +7,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "itens", ignore = true)
     @Mapping(target = "password", source = "password")
     @Mapping(target = "role", source = "role", defaultValue = "USER")
