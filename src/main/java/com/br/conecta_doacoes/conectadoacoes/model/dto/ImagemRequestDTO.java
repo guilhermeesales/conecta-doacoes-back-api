@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ImagemRequestDTO {
     private Long itemId;
-    private byte[] imagem;
+    private String imagem;
 
 }

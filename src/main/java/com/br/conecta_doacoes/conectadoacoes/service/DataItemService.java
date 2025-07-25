@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,11 @@ public class DataItemService {
                         HttpStatus.NOT_FOUND, "Imagem não encontrada para o item com ID: " + itemId
                 ));
 
+        String imagemBase64 = converterParaDataUrl(dataItem.getImagemItem(), dataItem.getTipoArquivo());
+
         return new ImagemRequestDTO(
                 dataItem.getItem().getId(),
-                dataItem.getImagemItem()
+                imagemBase64
         );
     }
 
@@ -40,7 +43,16 @@ public class DataItemService {
                 .stream()
                 .map(dataItem -> new ImagemRequestDTO(
                         dataItem.getItem().getId(),
-                        dataItem.getImagemItem()))
+                        converterParaDataUrl(dataItem.getImagemItem(), dataItem.getTipoArquivo())
+                ))
                 .collect(Collectors.toList());
+    }
+
+    private String converterParaDataUrl(byte[] imagemBytes, String tipoArquivo) {
+        if (imagemBytes == null || imagemBytes.length == 0) {
+            return null;
+        }
+        String base64 = Base64.getEncoder().encodeToString(imagemBytes);
+        return "data:"+  tipoArquivo + " ;base64," + base64;
     }
 }
