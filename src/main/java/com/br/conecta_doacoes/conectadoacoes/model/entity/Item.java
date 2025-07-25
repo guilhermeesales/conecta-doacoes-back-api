@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_item")
@@ -24,15 +25,20 @@ public class Item {
 
     private String descricao;
 
+    @Enumerated(EnumType.STRING)
     private Categoria categoria;
 
+    @Enumerated(EnumType.STRING)
     private Condicao condicao;
 
+    @Enumerated(EnumType.STRING)
     private Localizacao localizacao;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "data_item_id", nullable = false)
+    private DataItem dataItem;
 }

@@ -24,4 +24,6 @@ public class DataItem {
     @Lob
     private byte[] imagemItem;
 
+    @OneToOne(mappedBy = "dataItem")
+    private Item item;
 }

@@ -25,6 +25,8 @@ public class Usuario {
 
     private String password;
 
+    private String telefone;
+
     private String role = "USER";
 
     @OneToMany(mappedBy = "usuario")
