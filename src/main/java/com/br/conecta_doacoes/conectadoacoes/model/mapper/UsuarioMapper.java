@@ -14,6 +14,7 @@ public interface UsuarioMapper {
     Usuario toUsuario(UsuarioRegisterRequest dto);
 
     @Mapping(target = "confirmPassword", ignore = true)
+    @Mapping(target = "password", ignore = true)
     UsuarioRegisterRequest toUsuarioRegisterRequest(Usuario usuario);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

@@ -1,6 +1,7 @@
 package com.br.conecta_doacoes.conectadoacoes.service;
 
 import com.br.conecta_doacoes.conectadoacoes.exception.SenhasNaoCoincidemException;
+import com.br.conecta_doacoes.conectadoacoes.exception.UsuarioNaoEncontradoException;
 import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.model.mapper.UsuarioMapper;
@@ -33,6 +34,15 @@ public class UsuarioService {
         usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
         System.out.println(usuario);
         usuarioRepository.save(usuario);
+    }
+
+    public UsuarioRegisterRequest obterUsuarioLogado(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if(usuario == null) {
+            throw new UsuarioNaoEncontradoException("O email informado nao foi encontrado");
+        }
+
+        return usuarioMapper.toUsuarioRegisterRequest(usuario);
     }
 
     public void editarUsuario(Long id, UsuarioRegisterRequest dto) {

@@ -17,6 +17,7 @@ public class DataLoaderConfig {
                 Usuario user = new Usuario();
                 user.setEmail("guilhermessaless11@gmail.com");
                 user.setNome("Guilherme Sales");
+                user.setTelefone("88997019477");
                 user.setPassword(passwordEncoder.encode("guisales"));
                 usuarioRepository.save(user);
             }

@@ -1,6 +1,7 @@
 package com.br.conecta_doacoes.conectadoacoes.controller;
 
 import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
+import com.br.conecta_doacoes.conectadoacoes.service.PerfilUsuarioService;
 import com.br.conecta_doacoes.conectadoacoes.service.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,19 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
+    private final PerfilUsuarioService perfilUsuarioService;
 
-    public UsuarioController(UsuarioService usuarioService, BCryptPasswordEncoder passwordEncoder) {
+    public UsuarioController(UsuarioService usuarioService, BCryptPasswordEncoder passwordEncoder,
+                             PerfilUsuarioService perfilUsuarioService) {
         this.usuarioService = usuarioService;
+        this.perfilUsuarioService = perfilUsuarioService;
+    }
+
+    @GetMapping("/obter-usuario-logado")
+    public ResponseEntity<UsuarioRegisterRequest> obterUsuarioLogado() {
+        String email = perfilUsuarioService.getUsuarioLogado();
+        UsuarioRegisterRequest usuario = usuarioService.obterUsuarioLogado(email);
+        return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
     @PostMapping("/cadastrar")
