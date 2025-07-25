@@ -2,7 +2,7 @@ package com.br.conecta_doacoes.conectadoacoes.service;
 
 import com.br.conecta_doacoes.conectadoacoes.exception.SenhasNaoCoincidemException;
 import com.br.conecta_doacoes.conectadoacoes.exception.UsuarioNaoEncontradoException;
-import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.model.mapper.UsuarioMapper;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
@@ -25,7 +25,7 @@ public class UsuarioService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void salvarUsuario(UsuarioRegisterRequest dto) {
+    public void salvarUsuario(UsuarioRegisterRequestDTO dto) {
         if (!dto.getPassword().equals(dto.getConfirmPassword())) {
             throw new SenhasNaoCoincidemException("As senhas não coincidem");
         }
@@ -36,7 +36,7 @@ public class UsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    public UsuarioRegisterRequest obterUsuarioLogado(String email) {
+    public UsuarioRegisterRequestDTO obterUsuarioLogado(String email) {
         Usuario usuario = usuarioRepository.findByEmail(email);
         if(usuario == null) {
             throw new UsuarioNaoEncontradoException("O email informado nao foi encontrado");
@@ -45,7 +45,7 @@ public class UsuarioService {
         return usuarioMapper.toUsuarioRegisterRequest(usuario);
     }
 
-    public void editarUsuario(Long id, UsuarioRegisterRequest dto) {
+    public void editarUsuario(Long id, UsuarioRegisterRequestDTO dto) {
         Usuario existente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
 

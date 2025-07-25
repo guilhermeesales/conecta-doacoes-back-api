@@ -1,6 +1,6 @@
 package com.br.conecta_doacoes.conectadoacoes.controller;
 
-import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequest;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.UsuarioRegisterRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.service.PerfilUsuarioService;
 import com.br.conecta_doacoes.conectadoacoes.service.UsuarioService;
 import org.springframework.http.HttpStatus;
@@ -22,20 +22,20 @@ public class UsuarioController {
     }
 
     @GetMapping("/obter-usuario-logado")
-    public ResponseEntity<UsuarioRegisterRequest> obterUsuarioLogado() {
+    public ResponseEntity<UsuarioRegisterRequestDTO> obterUsuarioLogado() {
         String email = perfilUsuarioService.getUsuarioLogado();
-        UsuarioRegisterRequest usuario = usuarioService.obterUsuarioLogado(email);
+        UsuarioRegisterRequestDTO usuario = usuarioService.obterUsuarioLogado(email);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity<String> register(@RequestBody UsuarioRegisterRequest user) {
+    public ResponseEntity<String> register(@RequestBody UsuarioRegisterRequestDTO user) {
         this.usuarioService.salvarUsuario(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<String> editar(@RequestBody UsuarioRegisterRequest user, @PathVariable Long id) {
+    public ResponseEntity<String> editar(@RequestBody UsuarioRegisterRequestDTO user, @PathVariable Long id) {
         this.usuarioService.editarUsuario(id, user);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

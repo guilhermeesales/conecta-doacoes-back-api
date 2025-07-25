@@ -1,17 +1,13 @@
 package com.br.conecta_doacoes.conectadoacoes.model.mapper;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import com.br.conecta_doacoes.conectadoacoes.model.dto.ItemRequestDTO;
+import com.br.conecta_doacoes.conectadoacoes.model.entity.Item;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
-@Component
-public class ItemMapper {
-    private final ModelMapper modelMapper;
-    private final ObjectMapper objectMapper;
-
-    public ItemMapper(ModelMapper modelMapper, ObjectMapper objectMapper) {
-        this.modelMapper = modelMapper;
-        this.objectMapper = objectMapper;
-    }
+@Mapper(componentModel = "spring")
+public interface ItemMapper {
+    Item toItem(ItemRequestDTO dto);
+    void atualizarItemExistente(@MappingTarget Item item, ItemRequestDTO dto);
 
 }
