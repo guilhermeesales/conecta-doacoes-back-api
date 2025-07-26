@@ -1,6 +1,7 @@
 package com.br.conecta_doacoes.conectadoacoes.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class Usuario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,5 +30,6 @@ public class Usuario {
     private String role = "USER";
 
     @OneToMany(mappedBy = "usuario")
+    @JsonBackReference
     private List<Item> itens;
 }
