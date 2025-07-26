@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
@@ -26,6 +28,12 @@ public class UsuarioController {
         String email = perfilUsuarioService.getUsuarioLogado();
         UsuarioRegisterRequestDTO usuario = usuarioService.obterUsuarioLogado(email);
         return ResponseEntity.status(HttpStatus.OK).body(usuario);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioRegisterRequestDTO>> obterTodosUsuarios() {
+        List<UsuarioRegisterRequestDTO> usuarios = usuarioService.obterTodosUsuarios();
+        return ResponseEntity.ok(usuarios);
     }
 
     @PostMapping("/cadastrar")
