@@ -11,6 +11,5 @@ public interface UsuarioMapper {
 
     UsuarioRegisterRequestDTO toUsuarioRegisterRequest(Usuario usuario);
 
-
     void atualizarUsuarioExistente(@MappingTarget Usuario usuario, UsuarioRegisterRequestDTO dto);
 }
