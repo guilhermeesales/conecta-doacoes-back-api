@@ -37,10 +37,11 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
+    @JsonManagedReference
     private Usuario usuario;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "data_item_id", nullable = false)
-    @JsonManagedReference
+    @JsonManagedReference(value = "item-data")
     private DataItem dataItem;
 }
