@@ -6,8 +6,8 @@ services:
     container_name: conectadoacoes
     environment:
       POSTGRES_DB: conectadoacoes
-      POSTGRES_USER: gui
-      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "123"
     ports:
       - "5432:5432"
     volumes:

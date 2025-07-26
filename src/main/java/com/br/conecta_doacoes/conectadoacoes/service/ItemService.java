@@ -42,6 +42,7 @@ public class ItemService {
         dataItem.setImagemItem(arquivo.getBytes());
 
         Item item = itemMapper.toItem(dto);
+        System.out.println(item);
         item.setUsuario(usuario);
         item.setDataItem(dataItem);
 
