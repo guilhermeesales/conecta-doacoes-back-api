@@ -17,12 +17,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final AuthService authService;
 
-    public SecurityConfig(UserDetailsService userDetailsService,
-                          AuthService authService) {
+    public SecurityConfig(UserDetailsService userDetailsService
+                          ) {
         this.userDetailsService = userDetailsService;
-        this.authService = authService;
     }
 
     @Bean
@@ -30,10 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public AuthTokenFilter authTokenFilter() {
-        return new AuthTokenFilter(authService);
-    }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -46,7 +41,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .anyRequest().permitAll();
-
-        http.addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
