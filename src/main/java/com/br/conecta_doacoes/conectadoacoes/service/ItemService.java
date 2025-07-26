@@ -11,6 +11,7 @@ import com.br.conecta_doacoes.conectadoacoes.model.mapper.ItemMapper;
 import com.br.conecta_doacoes.conectadoacoes.repository.ItemRepository;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -98,12 +99,12 @@ public class ItemService {
         itemRepository.delete(existente);
     }
 
-
+    @Transactional
     public List<Item> listarPorCategoria(Categoria categoria){
         return itemRepository.findByCategoria(categoria);
-
     }
 
+    @Transactional
     public List<Item> listarPorLocalizacao(Localizacao localizacao){
         return itemRepository.findByLocalizacao(localizacao);
     }

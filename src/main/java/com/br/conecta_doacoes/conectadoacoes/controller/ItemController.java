@@ -99,15 +99,30 @@ public class ItemController {
 
     // GET /api/itens/categoria/{categoria}
     @GetMapping("/categoria/{categoria}")
-    public ResponseEntity<List<Item>> listarPorCategoria(@PathVariable("categoria") Categoria categoria) {
-        List<Item> itens = itemService.listarPorCategoria(categoria);
-        return ResponseEntity.ok(itens);
+    public ResponseEntity<?> listarPorCategoria(@PathVariable("categoria") Categoria categoria) {
+        try{
+            List<Item> itens = itemService.listarPorCategoria(categoria);
+            return ResponseEntity.ok(itens);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao buscar item pela categoria.");
+        }
+
     }
 
     // GET /api/itens/localizacao/{localizacao}
     @GetMapping("/localizacao/{localizacao}")
-    public ResponseEntity<List<Item>> listarPorLocalizacao(@PathVariable("localizacao") Localizacao localizacao) {
-        List<Item> itens = itemService.listarPorLocalizacao(localizacao);
-        return ResponseEntity.ok(itens);
+    public ResponseEntity<?> listarPorLocalizacao(@PathVariable("localizacao") Localizacao localizacao) {
+        try{
+            List<Item> itens = itemService.listarPorLocalizacao(localizacao);
+            return ResponseEntity.ok(itens);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao buscar item pela localização.");
+        }
     }
 }
