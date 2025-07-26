@@ -1,5 +1,6 @@
 package com.br.conecta_doacoes.conectadoacoes.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,5 +26,6 @@ public class DataItem {
     private byte[] imagemItem;
 
     @OneToOne(mappedBy = "dataItem")
+    @JsonBackReference(value = "item-data")
     private Item item;
 }
