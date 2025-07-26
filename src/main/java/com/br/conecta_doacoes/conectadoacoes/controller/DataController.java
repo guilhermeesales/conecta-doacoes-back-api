@@ -2,8 +2,6 @@ package com.br.conecta_doacoes.conectadoacoes.controller;
 
 import com.br.conecta_doacoes.conectadoacoes.model.dto.ImagemRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.service.DataItemService;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

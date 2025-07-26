@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -43,6 +45,15 @@ public class UsuarioService {
         }
 
         return usuarioMapper.toUsuarioRegisterRequest(usuario);
+    }
+
+
+    public List<UsuarioRegisterRequestDTO> obterTodosUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        // Converte a lista de entidades para uma lista de DTOs
+        return usuarios.stream()
+                .map(usuarioMapper::toUsuarioRegisterRequest)
+                .collect(Collectors.toList());
     }
 
     public void editarUsuario(Long id, UsuarioRegisterRequestDTO dto) {
