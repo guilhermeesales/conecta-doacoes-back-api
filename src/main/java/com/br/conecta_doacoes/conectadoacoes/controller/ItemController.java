@@ -37,14 +37,6 @@ public class ItemController {
 
     @PostMapping(value = "/cadastrar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> cadastrar(@ModelAttribute ItemRequestDTO dto) throws IOException {
-        System.out.println(">>> DTO recebido:");
-        System.out.println(" nome       = " + dto.getNome());
-        System.out.println(" descricao  = " + dto.getDescricao());
-        System.out.println(" categoria  = " + dto.getCategoria());
-        System.out.println(" condicao   = " + dto.getCondicao());
-        System.out.println(" localizacao= " + dto.getLocalizacao());
-        System.out.println(" usuarioId  = " + dto.getUsuarioId());
-        System.out.println(" arquivo    = " + (dto.getArquivoImagem() != null));
         itemService.salvarItem(dto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
