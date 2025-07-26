@@ -1,6 +1,7 @@
 package com.br.conecta_doacoes.conectadoacoes.controller;
 
 
+import com.br.conecta_doacoes.conectadoacoes.exception.UsuarioNaoAutenticadoException;
 import com.br.conecta_doacoes.conectadoacoes.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,20 @@ public class AuthController {
             return ResponseEntity.ok(Map.of("token", token.get()));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout() {
+        try {
+            authService.logoutCurrentUser();
+            return ResponseEntity.ok().build();
+        } catch (UsuarioNaoAutenticadoException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao realizar logout.");
         }
     }
 }

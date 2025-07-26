@@ -15,11 +15,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     private final AuthService authService;
+
+    private static final Set<String> PUBLIC_PATH_PREFIXES = Set.of(
+            "/api/auth/login",
+            "/api/usuarios/cadastrar",
+            "/api/itens/",
+            "/swagger-ui",
+            "/v2/api-docs",
+            "/v3/api-docs",
+            "/swagger-resources",
+            "/webjars/",
+            "/swagger-ui.html"
+    );
 
     public AuthTokenFilter(@Lazy AuthService authService) {
         this.authService = authService;
@@ -33,12 +46,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
         String path = request.getRequestURI();
 
-        if (path.startsWith("/api/auth/login") || path.startsWith("/api/usuarios/cadastrar") || path.startsWith("/api/itens/")) {
+        if (isPublicPath(path)) {
             filterChain.doFilter(request, response);
             return;
         }
-
-        System.out.println("Request: " + request.getMethod() + " " + request.getRequestURI());
 
         String token = request.getHeader("X-Auth-Token");
 
@@ -55,5 +66,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         });
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(String path) {
+        return PUBLIC_PATH_PREFIXES.stream().anyMatch(path::startsWith);
     }
 }
