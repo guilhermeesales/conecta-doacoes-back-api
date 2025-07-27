@@ -34,10 +34,6 @@ public class ItemService {
 
     @Transactional
     public void salvarItem(ItemRequestDTO dto) throws IOException {
-        log.info("Salvando item:");
-        log.info("Nome: {}", dto.getNome());
-        log.info("Categoria: {}", dto.getCategoria());
-
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                 .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado"));
 
