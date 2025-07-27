@@ -3,6 +3,9 @@ package com.br.conecta_doacoes.conectadoacoes.controller;
 import com.br.conecta_doacoes.conectadoacoes.exception.UsuarioNaoEncontradoException;
 import com.br.conecta_doacoes.conectadoacoes.model.dto.ItemRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Item;
+
+import com.br.conecta_doacoes.conectadoacoes.model.enums.Categoria;
+import com.br.conecta_doacoes.conectadoacoes.model.enums.Localizacao;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Tipo;
 import com.br.conecta_doacoes.conectadoacoes.service.ItemService;
 import org.springframework.http.HttpStatus;
@@ -98,6 +101,35 @@ public class ItemController {
         } catch (Exception e) {
             System.err.println("Erro ao remover item com ID " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao remover item.");
+        }
+    }
+
+    // GET /api/itens/categoria/{categoria}
+    @GetMapping("/categoria/{categoria}")
+    public ResponseEntity<?> listarPorCategoria(@PathVariable("categoria") Categoria categoria) {
+        try{
+            List<Item> itens = itemService.listarPorCategoria(categoria);
+            return ResponseEntity.ok(itens);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao buscar item pela categoria.");
+        }
+
+    }
+
+    // GET /api/itens/localizacao/{localizacao}
+    @GetMapping("/localizacao/{localizacao}")
+    public ResponseEntity<?> listarPorLocalizacao(@PathVariable("localizacao") Localizacao localizacao) {
+        try{
+            List<Item> itens = itemService.listarPorLocalizacao(localizacao);
+            return ResponseEntity.ok(itens);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao buscar item pela localização.");
         }
     }
 }
