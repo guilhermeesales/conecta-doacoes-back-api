@@ -3,6 +3,7 @@ package com.br.conecta_doacoes.conectadoacoes.controller;
 import com.br.conecta_doacoes.conectadoacoes.exception.UsuarioNaoEncontradoException;
 import com.br.conecta_doacoes.conectadoacoes.model.dto.ItemRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Item;
+import com.br.conecta_doacoes.conectadoacoes.model.enums.Tipo;
 import com.br.conecta_doacoes.conectadoacoes.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,12 @@ public class ItemController {
             System.err.println("Erro ao buscar item por ID " + id + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao buscar item.");
         }
+    }
+
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<List<Item>> listarPorTipo(@PathVariable("tipo") Tipo tipo) {
+        List<Item> itens = itemService.listarPorTipo(tipo);
+        return ResponseEntity.ok(itens);
     }
 
     @PostMapping("/cadastrar")
