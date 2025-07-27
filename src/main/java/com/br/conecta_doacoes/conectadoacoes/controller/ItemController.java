@@ -59,6 +59,21 @@ public class ItemController {
         return ResponseEntity.ok(itens);
     }
 
+    @GetMapping("/search/{nome}")
+    public ResponseEntity<?> listarPorNome(@PathVariable("nome") String nome) {
+        try {
+            List<Item> itens = itemService.buscarItensPorNome(nome);
+            return ResponseEntity.ok(itens);
+
+        } catch(IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro interno ao listar itens.");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao listar itens.");
+
+        }
+    }
+
     @PostMapping("/cadastrar")
     public ResponseEntity<String> cadastrar(@ModelAttribute ItemRequestDTO dto) {
         try {

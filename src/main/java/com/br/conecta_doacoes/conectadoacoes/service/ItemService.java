@@ -19,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -27,11 +29,13 @@ public class ItemService {
     private final ItemRepository itemRepository;
     private final UsuarioRepository usuarioRepository;
     private final ItemMapper itemMapper;
+    private final DataItemService dataItemService;
 
-    public ItemService(ItemRepository itemRepository, UsuarioRepository usuarioRepository, ItemMapper itemMapper) {
+    public ItemService(ItemRepository itemRepository, UsuarioRepository usuarioRepository, ItemMapper itemMapper, DataItemService dataItemService) {
         this.itemRepository = itemRepository;
         this.usuarioRepository = usuarioRepository;
         this.itemMapper = itemMapper;
+        this.dataItemService = dataItemService;
     }
 
     @Transactional
@@ -97,6 +101,16 @@ public class ItemService {
         itemRepository.save(existente);
     }
 
+    @Transactional(readOnly = true)
+    public List<Item> buscarItensPorNome(String nome) {
+        String nomeBuscar = Optional.ofNullable(nome)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException("O parâmetro 'nome' não pode ser vazio"));
+
+        return itemRepository.findByNomeContainingIgnoreCase(nomeBuscar);
+
+    }
 
     public void excluirItem(Long id) {
         Item existente = itemRepository.findById(id)
