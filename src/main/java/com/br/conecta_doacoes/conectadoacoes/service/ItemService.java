@@ -56,7 +56,6 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-
     public List<Item> listarTodos() {
         return itemRepository.findAll();
     }
