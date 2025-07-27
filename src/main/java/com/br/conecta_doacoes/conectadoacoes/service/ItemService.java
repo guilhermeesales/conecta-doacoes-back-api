@@ -8,6 +8,7 @@ import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
 import com.br.conecta_doacoes.conectadoacoes.model.mapper.ItemMapper;
 import com.br.conecta_doacoes.conectadoacoes.repository.ItemRepository;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @Service
 public class ItemService {
 
@@ -43,6 +45,9 @@ public class ItemService {
         System.out.println(item);
         item.setUsuario(usuario);
         item.setDataItem(dataItem);
+
+        log.info("Debug do objeto");
+        log.info(item.toString());
 
         itemRepository.save(item);
     }
