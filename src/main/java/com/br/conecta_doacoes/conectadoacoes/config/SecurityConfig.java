@@ -1,5 +1,6 @@
 package com.br.conecta_doacoes.conectadoacoes.config;
 
+import com.br.conecta_doacoes.conectadoacoes.filter.AuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,15 +9,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final AuthTokenFilter authTokenFilter;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService, AuthTokenFilter authTokenFilter) {
         this.userDetailsService = userDetailsService;
+        this.authTokenFilter = authTokenFilter;
     }
 
     @Bean
@@ -34,17 +38,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
+                        "/api/auth/login",
+                        "/api/usuarios/cadastrar",
+                        "/api/itens/obter-todos",
+                        "/public/**",
+                        "/api/itens/",
                         "/swagger-ui.html",
-                        "/swagger-resources/**",
-                        "/webjars/**",
-                        "/configuration/**",
+                        "/swagger-ui/**",
                         "/v2/api-docs",
-                        "/api/usuarios/cadastrar"
+                        "/v3/api-docs",
+                        "/swagger-resources/**",
+                        "/swagger-resources",
+                        "/webjars/**"
                 ).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .httpBasic().disable();
     }
+
 }

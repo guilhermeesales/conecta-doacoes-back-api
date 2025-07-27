@@ -25,7 +25,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping
+    @GetMapping("/obter-todos")
     public ResponseEntity<?> listarTodos() {
         try {
             List<Item> itens = itemService.listarTodos();

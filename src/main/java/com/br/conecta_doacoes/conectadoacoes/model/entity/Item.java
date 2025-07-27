@@ -3,7 +3,6 @@ package com.br.conecta_doacoes.conectadoacoes.model.entity;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Categoria;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Condicao;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Localizacao;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,11 +37,11 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Usuario usuario;
 
     @OneToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "data_item_id", nullable = false)
-    @JsonManagedReference("dataItem-item")
+    @JsonManagedReference(value = "item-data")
     private DataItem dataItem;
 }

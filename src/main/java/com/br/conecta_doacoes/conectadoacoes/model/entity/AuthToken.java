@@ -1,31 +1,32 @@
 package com.br.conecta_doacoes.conectadoacoes.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "tb_data")
+@Table(name = "auth_tokens")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class DataItem {
+public class AuthToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nomeArquivo;
+    private String token;
 
-    private String tipoArquivo;
+    private String email;
 
-    @Lob
-    private byte[] imagemItem;
+    private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "dataItem")
-    @JsonBackReference(value = "item-data")
-    private Item item;
+    public AuthToken(String token, String email) {
+        this.token = token;
+        this.email = email;
+    }
+
 }
