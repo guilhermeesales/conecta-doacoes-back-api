@@ -25,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private static final Set<String> PUBLIC_PATH_PREFIXES = Set.of(
             "/api/auth/login",
             "/api/usuarios/cadastrar",
-            "/api/itens/",
+            "/api/itens/obter-todos",
             "/swagger-ui",
             "/v2/api-docs",
             "/v3/api-docs",
