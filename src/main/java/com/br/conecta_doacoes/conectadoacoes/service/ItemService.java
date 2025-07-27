@@ -10,6 +10,7 @@ import com.br.conecta_doacoes.conectadoacoes.repository.ItemRepository;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,11 +31,19 @@ public class ItemService {
         this.itemMapper = itemMapper;
     }
 
+    @Transactional
     public void salvarItem(ItemRequestDTO dto) throws IOException {
+        log.info("Salvando item:");
+        log.info("Nome: {}", dto.getNome());
+        log.info("Categoria: {}", dto.getCategoria());
+
         Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
                 .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário não encontrado"));
 
         MultipartFile arquivo = dto.getArquivoImagem();
+        if (arquivo == null || arquivo.isEmpty()) {
+            throw new IllegalArgumentException("Arquivo da imagem está vazio ou ausente");
+        }
 
         DataItem dataItem = new DataItem();
         dataItem.setNomeArquivo(arquivo.getOriginalFilename());
@@ -42,15 +51,12 @@ public class ItemService {
         dataItem.setImagemItem(arquivo.getBytes());
 
         Item item = itemMapper.toItem(dto);
-        System.out.println(item);
         item.setUsuario(usuario);
         item.setDataItem(dataItem);
 
-        log.info("Debug do objeto");
-        log.info(item.toString());
-
         itemRepository.save(item);
     }
+
 
 
     public List<Item> listarTodos() {
