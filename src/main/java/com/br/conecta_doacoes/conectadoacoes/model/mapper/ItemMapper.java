@@ -20,8 +20,10 @@ public class ItemMapper {
 
         item.setNome(dto.getNome());
         item.setDescricao(dto.getDescricao());
+        item.setTipo(dto.getTipo());
         item.setCategoria(dto.getCategoria());
         item.setCondicao(dto.getCondicao());
+
         item.setLocalizacao(dto.getLocalizacao());
 
         if (dto.getUsuarioId() != null) {

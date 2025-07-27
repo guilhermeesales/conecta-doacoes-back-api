@@ -3,6 +3,7 @@ package com.br.conecta_doacoes.conectadoacoes.model.entity;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Categoria;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Condicao;
 import com.br.conecta_doacoes.conectadoacoes.model.enums.Localizacao;
+import com.br.conecta_doacoes.conectadoacoes.model.enums.Tipo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,6 +35,9 @@ public class Item {
 
     @Enumerated(EnumType.STRING)
     private Localizacao localizacao;
+
+    @Enumerated(EnumType.STRING)
+    private Tipo tipo;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
