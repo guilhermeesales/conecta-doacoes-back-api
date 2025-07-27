@@ -5,8 +5,6 @@ import com.br.conecta_doacoes.conectadoacoes.model.dto.ItemRequestDTO;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.DataItem;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Item;
 import com.br.conecta_doacoes.conectadoacoes.model.entity.Usuario;
-import com.br.conecta_doacoes.conectadoacoes.model.enums.Categoria;
-import com.br.conecta_doacoes.conectadoacoes.model.enums.Localizacao;
 import com.br.conecta_doacoes.conectadoacoes.model.mapper.ItemMapper;
 import com.br.conecta_doacoes.conectadoacoes.repository.ItemRepository;
 import com.br.conecta_doacoes.conectadoacoes.repository.UsuarioRepository;
@@ -59,7 +57,10 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-
+    @Transactional
+    public List<Item> listarPorTipo(Tipo tipo) {
+        return itemRepository.findByTipo(tipo);
+    }
 
     public List<Item> listarTodos() {
         return itemRepository.findAll();
