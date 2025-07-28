@@ -26,6 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             "/api/auth/login",
             "/api/usuarios/cadastrar",
             "/api/itens/obter-todos",
+            "/api/itens/",
             "/swagger-ui",
             "/v2/api-docs",
             "/v3/api-docs",

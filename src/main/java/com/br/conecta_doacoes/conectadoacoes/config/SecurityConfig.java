@@ -3,6 +3,7 @@ package com.br.conecta_doacoes.conectadoacoes.config;
 import com.br.conecta_doacoes.conectadoacoes.filter.AuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,7 +43,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/usuarios/cadastrar",
                         "/api/itens/obter-todos",
                         "/public/**",
-                        "/api/itens/",
                         "/swagger-ui.html",
                         "/swagger-ui/**",
                         "/v2/api-docs",
@@ -51,6 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources",
                         "/webjars/**"
                 ).permitAll()
+                .regexMatchers(HttpMethod.GET, "/api/itens/.*")
+                .permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class)
